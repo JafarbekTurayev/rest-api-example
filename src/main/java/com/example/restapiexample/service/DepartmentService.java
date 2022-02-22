@@ -36,12 +36,22 @@ public class DepartmentService {
         return new ApiResponse("Mana", true, map);
     }
 
-//    public ApiResponse edit() {
-//
-//    }
-//
-//    public ApiResponse delete() {
-//
-//    }
+    public ApiResponse edit(Integer id, DepartmentDTO dto) {
+        Optional<Department> byId = departmentRepository.findById(id);
+        if (!byId.isPresent()) return new ApiResponse("Xatolik", false);
 
+        Department edited = byId.get();
+        Department department = modelMapper.map(dto, edited.getClass());
+        department.setId(id);
+        departmentRepository.save(department);
+        return new ApiResponse("edited", true);
+
+    }
+
+    public ApiResponse delete(Integer id) {
+        if (!departmentRepository.existsById(id)) return new ApiResponse("Xatolik", false);
+
+        departmentRepository.deleteById(id);
+        return new ApiResponse("Mana", true);
+    }
 }

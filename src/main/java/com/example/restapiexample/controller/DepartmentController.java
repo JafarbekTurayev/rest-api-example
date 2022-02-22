@@ -25,6 +25,7 @@ public class DepartmentController {
 
     @PostMapping
     public HttpEntity<?> add(@RequestBody DepartmentDTO dto) {
+        // dto ->  department
         Department department = modelMapper.map(dto, Department.class);
         ApiResponse response = departmentService.add(department);
         return ResponseEntity.ok().body(response);
@@ -42,5 +43,18 @@ public class DepartmentController {
     public HttpEntity<?> getById(@PathVariable Integer id) {
         ApiResponse response = departmentService.getOne(id);
         return ResponseEntity.ok().body(response);
+    }
+
+    @PutMapping("/{id}")
+    public HttpEntity<?> edit(@PathVariable Integer id, @RequestBody DepartmentDTO dto) {
+        ApiResponse response = departmentService.edit(id, dto);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public HttpEntity<?> delete(@PathVariable Integer id) {
+        ApiResponse response = departmentService.delete(id);
+        return ResponseEntity.ok().body(response);
+
     }
 }
