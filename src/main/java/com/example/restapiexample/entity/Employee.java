@@ -29,7 +29,7 @@ public class Employee extends AbsNameEntity {
     private List<Card> cardList;
 
     @Column(unique = true)
-    @Pattern(regexp = "/+998[0-9]{9}")
+//    @Pattern(regexp = "[+998]{1}[0-9]{9}")
     private String phone;
     @Pattern(regexp = "[A-Z]{2}")
     private String serial; //AA
