@@ -27,6 +27,8 @@ public class EmployeeService {
 
     public ApiResponse add(EmployeeDTO dto) {
         Employee employee = modelMapper.map(dto, Employee.class);
+        Department department = modelMapper.map(dto, Department.class);
+        employee.setDepartment(department);
         Employee save = employeeRepository.save(employee);
         return new ApiResponse("saved", true, save);
 
