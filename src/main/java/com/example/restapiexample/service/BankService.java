@@ -28,6 +28,7 @@ public class BankService {
     }
 
     public ApiResponse add(BankDTO dto) {
+        if (bankRepository.existsByPhone(dto.getPhone())) return new ApiResponse("Bunday nomer yes!", false);
         Bank bank = new Bank();
         bank.setName(dto.getName());
         bank.setPhone(dto.getPhone());
