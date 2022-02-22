@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 @RestController
 @RequestMapping("/api/bank")
@@ -38,8 +39,24 @@ public class BankController {
     @GetMapping("/{id}")
     public HttpEntity<?> getOne(@PathVariable Integer id) {
         Optional<Bank> optional = bankService.getOne(id);
-        return ResponseEntity.status(!optional.isEmpty() ?
+        return ResponseEntity.status(optional.isPresent() ?
                 HttpStatus.OK :
-                HttpStatus.NOT_FOUND).body(optional.get());
+                HttpStatus.NOT_FOUND).body(optional.orElse(new Bank()));
+    }
+
+    @PutMapping("/{id}")
+    public HttpEntity<?> edit(@PathVariable Integer id, @RequestBody BankDTO dto) {
+        ApiResponse response = bankService.edit(id, dto);
+
+        return ResponseEntity.status(response.isSuccess() ?
+                HttpStatus.OK : HttpStatus.CONFLICT).body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public HttpEntity<?> delete(@PathVariable Integer id) {
+        ApiResponse response = bankService.delete(id);
+        return ResponseEntity.status(
+                response.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT
+        ).body(response);
     }
 }

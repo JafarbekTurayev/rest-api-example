@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -18,7 +19,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class Bank extends AbsNameEntity {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Address address;
 
     @Column(unique = true)
