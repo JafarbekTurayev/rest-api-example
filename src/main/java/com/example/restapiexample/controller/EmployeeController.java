@@ -7,10 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/employee")
@@ -21,9 +20,15 @@ public class EmployeeController {
 
 
     @PostMapping
-    public HttpEntity<?> add(@RequestBody EmployeeDTO dto){
-       ApiResponse response= employeeService.add(dto);
-       return ResponseEntity.ok().body(response);
+    public HttpEntity<?> add(@RequestBody EmployeeDTO dto) {
+        ApiResponse response = employeeService.add(dto);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping
+    public HttpEntity<?> getAll() {
+        List<EmployeeDTO> all = employeeService.getAll();
+        return ResponseEntity.ok().body(all);
     }
 
 }

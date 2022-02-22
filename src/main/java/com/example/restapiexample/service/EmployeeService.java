@@ -11,6 +11,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Service
 public class EmployeeService {
 
@@ -26,5 +30,11 @@ public class EmployeeService {
         Employee save = employeeRepository.save(employee);
         return new ApiResponse("saved", true, save);
 
+    }
+
+    public List<EmployeeDTO> getAll() {
+        List<Employee> all = employeeRepository.findAll();
+        return all.stream().map(employee ->
+                modelMapper.map(employee, EmployeeDTO.class)).collect(Collectors.toList());
     }
 }
