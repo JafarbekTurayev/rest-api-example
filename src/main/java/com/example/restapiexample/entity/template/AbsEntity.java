@@ -41,5 +41,5 @@ public class AbsEntity {
 //    @Column(name = "updated_by_id")
 //    private UUID updatedBy;
 
-    private boolean active;
+    private boolean active = true;
 }

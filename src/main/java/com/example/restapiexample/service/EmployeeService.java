@@ -49,4 +49,29 @@ public class EmployeeService {
         List<Employee> all = employeeRepository.findAll();
         return new ApiResponse("Mana", true, all);
     }
+
+    public ApiResponse getOne(Integer id) {
+        return new ApiResponse("Mana", true, employeeRepository.findById(id).get());
+    }
+
+    public ApiResponse edit(Integer id, EmployeeDTO dto) {
+        Optional<Employee> byId = employeeRepository.findById(id);
+        if (!byId.isPresent()) return new ApiResponse("Xatolik", false);
+        Employee edited = byId.get();
+        edited.setName(dto.getName());
+        edited.setSalary(dto.getSalary());
+        edited.setSerial(dto.getSerial());
+        edited.setNumber(dto.getNumber());
+        Optional<Department> byId1 = departmentRepository.findById(dto.getDepartmentId());
+        edited.setDepartment(byId1.get());
+        Employee save = employeeRepository.save(edited);
+        return new ApiResponse("Mana", true, save);
+
+    }
+
+    public ApiResponse delete(Integer id) {
+        if (!employeeRepository.existsById(id)) return new ApiResponse("Xatolik", false);
+        employeeRepository.deleteById(id);
+        return new ApiResponse("Delete", true);
+    }
 }

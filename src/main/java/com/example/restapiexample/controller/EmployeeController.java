@@ -31,4 +31,16 @@ public class EmployeeController {
         return ResponseEntity.ok().body(all);
     }
 
+    @GetMapping("/{id}")
+    public HttpEntity<?> getOne(@PathVariable Integer id) {
+        ApiResponse response = employeeService.getOne(id);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PutMapping("/{id}")
+    public HttpEntity<ApiResponse> edit(@PathVariable Integer id, @RequestBody EmployeeDTO dto) {
+        ApiResponse response = employeeService.edit(id, dto);
+        return ResponseEntity.ok(response);
+    }
+
 }
