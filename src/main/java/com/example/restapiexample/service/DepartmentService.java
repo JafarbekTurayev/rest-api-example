@@ -23,7 +23,10 @@ public class DepartmentService {
         return departmentRepository.findAll();
     }
 
-    public ApiResponse add(Department department) {
+    public ApiResponse add(DepartmentDTO dto) {
+        Department department = new Department();
+        department.setDirector(dto.getDirector());
+        department.setName(dto.getName());
         Department save = departmentRepository.save(department);
         return new ApiResponse("Added!", true, save);
     }
@@ -31,9 +34,8 @@ public class DepartmentService {
     public ApiResponse getOne(Integer id) {
         Optional<Department> byId = departmentRepository.findById(id);
         Department department = byId.get();
-        DepartmentDTO map = modelMapper.map(department, DepartmentDTO.class);
-
-        return new ApiResponse("Mana", true, map);
+//        DepartmentDTO map = modelMapper.map(department, DepartmentDTO.class);
+        return new ApiResponse("Mana", true, department);
     }
 
     public ApiResponse edit(Integer id, DepartmentDTO dto) {
@@ -41,16 +43,15 @@ public class DepartmentService {
         if (!byId.isPresent()) return new ApiResponse("Xatolik", false);
 
         Department edited = byId.get();
-        Department department = modelMapper.map(dto, edited.getClass());
-        department.setId(id);
-        departmentRepository.save(department);
+        edited.setDirector(dto.getDirector());
+        edited.setName(dto.getName());
+//        Department department = modelMapper.map(dto, edited.getClass());
+        departmentRepository.save(edited);
         return new ApiResponse("edited", true);
-
     }
 
     public ApiResponse delete(Integer id) {
         if (!departmentRepository.existsById(id)) return new ApiResponse("Xatolik", false);
-
         departmentRepository.deleteById(id);
         return new ApiResponse("Mana", true);
     }

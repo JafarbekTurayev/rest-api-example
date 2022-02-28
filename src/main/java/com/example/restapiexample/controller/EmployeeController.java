@@ -27,7 +27,7 @@ public class EmployeeController {
 
     @GetMapping
     public HttpEntity<?> getAll() {
-        List<EmployeeDTO> all = employeeService.getAll();
+        ApiResponse all = employeeService.getAll();
         return ResponseEntity.ok().body(all);
     }
 

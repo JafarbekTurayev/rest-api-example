@@ -3,6 +3,7 @@ package com.example.restapiexample.controller;
 import com.example.restapiexample.dto.ApiResponse;
 import com.example.restapiexample.dto.DepartmentDTO;
 import com.example.restapiexample.entity.Department;
+import com.example.restapiexample.repository.DepartmentRepository;
 import com.example.restapiexample.service.DepartmentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,26 +18,28 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/department")
 public class DepartmentController {
 
-    @Autowired
-    ModelMapper modelMapper;
+//    @Autowired
+//    ModelMapper modelMapper;
 
+    @Autowired
+    DepartmentRepository departmentRepository;
     @Autowired
     DepartmentService departmentService;
 
     @PostMapping
     public HttpEntity<?> add(@RequestBody DepartmentDTO dto) {
         // dto ->  department
-        Department department = modelMapper.map(dto, Department.class);
-        ApiResponse response = departmentService.add(department);
+//        Department department = modelMapper.map(dto, Department.class);
+        ApiResponse response = departmentService.add(dto);
         return ResponseEntity.ok().body(response);
     }
 
     @GetMapping
     public HttpEntity<?> getAll() {
-        List<DepartmentDTO> collect = departmentService.getAll().stream().map(
-                        department -> modelMapper.map(department, DepartmentDTO.class))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok().body(collect);
+//        List<DepartmentDTO> collect = departmentService.getAll().stream().map(
+//                        department -> modelMapper.map(department, DepartmentDTO.class))
+//                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(departmentRepository.findAll());
     }
 
     @GetMapping("/{id}")
@@ -55,6 +58,5 @@ public class DepartmentController {
     public HttpEntity<?> delete(@PathVariable Integer id) {
         ApiResponse response = departmentService.delete(id);
         return ResponseEntity.ok().body(response);
-
     }
 }

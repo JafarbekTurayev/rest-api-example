@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,17 +27,26 @@ public class EmployeeService {
     DepartmentRepository departmentRepository;
 
     public ApiResponse add(EmployeeDTO dto) {
-        Employee employee = modelMapper.map(dto, Employee.class);
-        Department department = modelMapper.map(dto, Department.class);
-        employee.setDepartment(department);
+//        Employee employee = modelMapper.map(dto, Employee.class);
+//        Department department = modelMapper.map(dto, Department.class);
+//        employee.setDepartment(department);
+        Employee employee = new Employee();
+        employee.setName(dto.getName());
+        employee.setPhone(dto.getPhone());
+        employee.setSerial(dto.getSerial());
+        employee.setNumber(dto.getNumber());
+        employee.setSalary(dto.getSalary());
+//        Department one = departmentRepository.getOne(dto.getDepartmentId());
+        Optional<Department> departmentOptional = departmentRepository.findById(dto.getDepartmentId());
+        employee.setDepartment(departmentOptional.get());
+
         Employee save = employeeRepository.save(employee);
         return new ApiResponse("saved", true, save);
 
     }
 
-    public List<EmployeeDTO> getAll() {
+    public ApiResponse getAll() {
         List<Employee> all = employeeRepository.findAll();
-        return all.stream().map(employee ->
-                modelMapper.map(employee, EmployeeDTO.class)).collect(Collectors.toList());
+        return new ApiResponse("Mana", true, all);
     }
 }
