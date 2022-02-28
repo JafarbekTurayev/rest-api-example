@@ -24,6 +24,7 @@ public class BankController {
 
     @PostMapping
     public HttpEntity<?> save(@Valid @RequestBody BankDTO dto) {
+//        Bank::setName;
         ApiResponse response = bankService.add(dto);
         return ResponseEntity.status(response.isSuccess() ?
                         HttpStatus.CREATED : HttpStatus.CONFLICT).
